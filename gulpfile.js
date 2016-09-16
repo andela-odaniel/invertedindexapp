@@ -12,6 +12,9 @@ gulp.task('build-source',function(cb){
   exec('browserify src/inverted-index.js > src/main.js',function(err,stdout,stderr){
     console.log(stdout);
     console.log(stderr);
+    if(err){
+      console.log(err);
+    }
     cb();
   });
 });
@@ -20,6 +23,9 @@ gulp.task('build-spec',function(cb){
   exec('browserify spec/inverted-index-spec.js > spec/test.js',function(err,stdout,stderr){
     console.log(stdout);
     console.log(stderr);
+    if(err){
+      console.log(err);
+    }
     cb();
   });
 });
