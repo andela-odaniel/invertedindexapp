@@ -1,0 +1,34 @@
+{
+  "name": "invertedindexapp",
+  "version": "1.0.0",
+  "description": "An elasticsearch like full text search app",
+  "main": "index.js",
+  "scripts": {
+    "test": "./node_modules/.bin/jasmine-node spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sir-castiq/invertedindexapp.git"
+  },
+  "keywords": [
+    "elasticsearch",
+    "inverted-index"
+  ],
+  "author": "@sir_castiq",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sir-castiq/invertedindexapp/issues"
+  },
+  "homepage": "https://github.com/sir-castiq/invertedindexapp#readme",
+  "devDependencies": {
+    "browser-sync": "^2.16.0",
+    "gulp": "^3.9.1",
+    "jasmine-core": "^2.5.1",
+    "jasmine-node": "^1.14.5",
+    "yargs": "^5.0.0"
+  },
+  "dependencies": {
+    "lodash": "^4.15.0",
+    "md5-file": "^3.1.1"
+  }
+}
