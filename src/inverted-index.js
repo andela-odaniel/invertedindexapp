@@ -37,7 +37,7 @@ var Index = function(){
     //get an instance of the index class for use inside the lodash loops
     //lodash overwrites "this"
     var self = this;
-    _.forIn(this.jsonFiles,function(file,fileIndex){
+    _.forIn(self.jsonFiles,function(file,fileIndex){
       _.forIn(file,function(document,documentIndex){
         self.index[fileIndex] = self.index[fileIndex] || {};
         var titleWords = self.getUniqueWords(document.title);
@@ -60,7 +60,11 @@ var Index = function(){
   };
 
 
-  this.getIndex = function(fileIndex){
+  this.getIndex = function(){
+    return this.index;
+  };
+
+  this.getFileIndex = function(fileIndex){
     return this.index[fileIndex] !== undefined ? this.index[fileIndex] : false;
   };
 

@@ -37845,9 +37845,10 @@ var hashFunction = require('../src/hashObject');
 var _ = require('lodash');
 
 var Index = function(){
+  //store files
   this.jsonFiles = {};
+  //store index
   this.index = {};
-  var self = this;
 
   this.addFile = function(index,jsonFile){
     //if the file is empty, do nothing
@@ -37875,9 +37876,10 @@ var Index = function(){
 
 
   this.buildIndex = function(){
-    var files = this.jsonFiles;
+    //get an instance of the index class for use inside the lodash loops
+    //lodash overwrites "this"
     var self = this;
-    _.forIn(files,function(file,fileIndex){
+    _.forIn(self.jsonFiles,function(file,fileIndex){
       _.forIn(file,function(document,documentIndex){
         self.index[fileIndex] = self.index[fileIndex] || {};
         var titleWords = self.getUniqueWords(document.title);
@@ -37896,7 +37898,6 @@ var Index = function(){
         });
       });
     });
-    console.log(self.index);
     this.index = self.index;
   };
 
@@ -37905,11 +37906,11 @@ var Index = function(){
     return this.index;
   };
 
-  this.setIndex = function(index){
-    this.index = index;
-  }
-};
+  this.getFileIndex = function(fileIndex){
+    return this.index[fileIndex] !== undefined ? this.index[fileIndex] : false;
+  };
 
+};
 
 module.exports = Index;
 
