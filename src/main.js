@@ -37828,28 +37828,31 @@ var Index = function(){
     //get an instance of the index class for use inside the lodash loops
     //lodash overwrites "this"
     var self = this;
+    //loop through files
     _.forIn(self.jsonFiles,function(file,fileIndex){
+      //loop through json objects in file
       _.forIn(file,function(document,documentIndex){
+        //create object if undefined
         self.index[fileIndex] = self.index[fileIndex] || {};
         var titleWords = self.getUniqueWords(document.title);
-        _.forIn(titleWords,function(word,wordIndex){
-          self.index[fileIndex][word] = self.index[fileIndex][word] || [];
-          var wordDetail = {};
-          wordDetail[documentIndex] = "title";
-          self.index[fileIndex][word].push(wordDetail);
-        });
+        self.saveTokens(titleWords,"title",fileIndex,documentIndex);
         var textWords = self.getUniqueWords(document.text);
-        _.forIn(textWords,function(word,wordIndex){
-          self.index[fileIndex][word] = self.index[fileIndex][word] || [];
-          var wordDetail = {};
-          wordDetail[documentIndex] = "text";
-          self.index[fileIndex][word].push(wordDetail);
-        });
+        self.saveTokens(textWords,"text",fileIndex,documentIndex);
       });
     });
     this.index = self.index;
   };
 
+  this.saveTokens = function(string,stringLocation,fileIndex,documentIndex){
+    var tempIndex = this.index;
+    _.forIn(string,function(word,wordIndex){
+      tempIndex[fileIndex][word] = tempIndex[fileIndex][word] || [];
+      var wordDetail = {};
+      wordDetail[documentIndex] = stringLocation;
+      tempIndex[fileIndex][word].push(wordDetail);
+    });
+    this.index = tempIndex;
+  };
 
   this.getIndex = function(){
     return this.index;
