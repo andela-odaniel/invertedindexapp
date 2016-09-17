@@ -29,7 +29,7 @@ var Index = function(){
   };
 
   this.getUniqueWords = function(string){
-    return _.uniq(string.replace(/[.,\/#!$%\^&\*;:'{}=\-_`~()]/g, '').trim().toLowerCase().split(' '));
+    return string.replace(/[.,\/#!$%\^&\*;:'{}=\-_`~()]/g, '').trim().toLowerCase().split(' ');
   };
 
 

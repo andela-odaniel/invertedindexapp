@@ -1,9 +1,9 @@
 "use strict";
 var IndexObject = require('../src/inverted-index');
-// var fs = require('fs');
 var hashFunction = require('../src/hashObject');
 var file0 = require('../data/file0.js');
 var file1 = require('../data/file1.js');
+var _ = require('lodash');
 
 describe('Inverted Index Class',function(){
   var Index = new IndexObject();
@@ -25,6 +25,25 @@ describe('Inverted Index Class',function(){
     it("it should created an inverted index",function(){
       Index.buildIndex();
       expect(Object.keys(Index.getIndex()).length).toBeGreaterThan(0);
+    });
+
+    it("it should be an accurate index of the file",function(){
+      //get the inverted index
+      var index = Index.getIndex();
+      //get the uploaded json Files
+      var files = Index.getFiles();
+      _.forIn(index,function(file,fileIndex){
+        _.forIn(file,function(word,wordIndex){
+          _.forIn(word,function(object,objectIndex){
+            _.forIn(object,function(value,key){
+              //get the json object referred to by the index entry
+              var containingString = files[fileIndex][key][value].toLowerCase();
+              //check if the string contains the index entry
+              expect(containingString.indexOf(wordIndex)).toBeGreaterThan(-1);
+            });
+          });
+        })
+      });
     });
   });
 
