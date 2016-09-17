@@ -1,8 +1,10 @@
 "use strict";
 var IndexObject = require('../src/inverted-index');
 var hashFunction = require('../src/hashObject');
-var file0 = require('../data/file0.js');
-var file1 = require('../data/file1.js');
+var filename0 = '../data/file0.js';
+var filename1 = '../data/file1.js';
+var file0 = require(filename0);
+var file1 = require(filename1);
 var _ = require('lodash');
 
 describe('Inverted Index Class',function(){
@@ -11,12 +13,12 @@ describe('Inverted Index Class',function(){
 
   describe('when I add a json file',function(){
     it("it should make sure the file is not empty",function(){
-      Index.addFile(hashFunction(file0),file0);
+      Index.addFile(hashFunction(filename0),file0);
       expect(Object.keys(Index.getFiles()).length).toEqual(0);
     });
 
     it("it should increment the files count by one", function () {
-      Index.addFile(hashFunction(file1),file1);
+      Index.addFile(hashFunction(filename1),file1);
       expect(Object.keys(Index.getFiles()).length).toEqual((currentFileCount + 1));
     });
   });
