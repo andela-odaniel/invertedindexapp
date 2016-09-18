@@ -28,7 +28,7 @@ var Index = function(){
     return this.jsonFiles;
   };
 
-  this.getUniqueWords = function(string){
+  this.getWords = function(string){
     return string.replace(/[.,\/#!$%\^&\*;:'{}=\-_`~()]/g, '').trim().toLowerCase().split(' ');
   };
 
@@ -43,9 +43,9 @@ var Index = function(){
       _.forIn(file,function(document,documentIndex){
         //create object if undefined
         self.index[fileIndex] = self.index[fileIndex] || {};
-        var titleWords = self.getUniqueWords(document.title);
+        var titleWords = self.getWords(document.title);
         self.saveTokens(titleWords,"title",fileIndex,documentIndex);
-        var textWords = self.getUniqueWords(document.text);
+        var textWords = self.getWords(document.text);
         self.saveTokens(textWords,"text",fileIndex,documentIndex);
       });
     });
