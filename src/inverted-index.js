@@ -5,7 +5,7 @@ var _ = require('lodash');
 var Index = function(){
   //store files
   this.jsonFiles = {};
-  //store index
+  //store the inverted index
   this.index = {};
 
   this.addFile = function(index,jsonFile){
@@ -65,7 +65,6 @@ var Index = function(){
     var result = [];
     _.forIn(this.getIndex(),function(file,fileIndex){
       if(file[word] !== undefined){
-        // result.push(file[word]);
         result[fileIndex] = file[word];
       }
     });
@@ -76,9 +75,7 @@ var Index = function(){
     var result = {};
     var self = this;
     searchTerms.forEach(function(value){
-      // console.log(value);
       result[value] = self.searchSingleWord(value);
-      // console.log(result);
     });
     return result;
   };
@@ -106,12 +103,9 @@ var Index = function(){
       try {
           JSON.parse(jsonFile);
       } catch (err) {
-        console.log(false);
           return false;
       }
-      console.log(true);
       return true;
-
   };
 
 };
