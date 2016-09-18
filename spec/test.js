@@ -37790,10 +37790,10 @@ module.exports = [
 },{}],225:[function(require,module,exports){
 "use strict";
 var IndexObject = require('../src/inverted-index');
-// var fs = require('fs');
 var hashFunction = require('../src/hashObject');
 var file0 = require('../data/file0.js');
 var file1 = require('../data/file1.js');
+var _ = require('lodash');
 
 describe('Inverted Index Class',function(){
   var Index = new IndexObject();
@@ -37816,11 +37816,31 @@ describe('Inverted Index Class',function(){
       Index.buildIndex();
       expect(Object.keys(Index.getIndex()).length).toBeGreaterThan(0);
     });
+
+    // it("it should be an accurate index of the file",function(){
+      // var index = Index.getIndex();
+      // var files = Index.getFiles();
+      // console.log(files);
+      // console.log(index);
+      // _.forIn(index,function(file,fileIndex){
+      //   _.forIn(file,function(word,wordIndex){
+      //     _.forIn(word,function(object,objectIndex){
+      //       _.forIn(object,function(value,key){
+      //         console.log(wordIndex);
+      //         console.log(index[fileIndex][wordIndex]);
+      //         console.log(value);
+      //         console.log(files[fileIndex][objectIndex][value]);
+      //         console.log("\n");
+      //       });
+      //     });
+      //   })
+      // });
+    // });
   });
 
 });
 
-},{"../data/file0.js":222,"../data/file1.js":223,"../src/hashObject":226,"../src/inverted-index":227}],226:[function(require,module,exports){
+},{"../data/file0.js":222,"../data/file1.js":223,"../src/hashObject":226,"../src/inverted-index":227,"lodash":224}],226:[function(require,module,exports){
 "use strict";
 var crypto = require('crypto');
 
