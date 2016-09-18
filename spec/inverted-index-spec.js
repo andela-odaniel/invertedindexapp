@@ -44,7 +44,7 @@ describe('Inverted Index Class',function(){
               expect(containingString.indexOf(wordIndex)).toBeGreaterThan(-1);
             });
           });
-        })
+        });
       });
     });
   });
