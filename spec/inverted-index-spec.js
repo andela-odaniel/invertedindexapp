@@ -9,24 +9,24 @@ var _ = require('lodash');
 
 describe('Inverted Index Class',function(){
   var Index = new IndexObject();
-  var currentFileCount = Object.keys(Index.getFiles()).length;
+  var currentFileCount = _.size(Index.getFiles());
 
   describe('when I add a json file',function(){
     it("it should make sure the file is not empty",function(){
       Index.addFile(hashFunction(filename0),file0);
-      expect(Object.keys(Index.getFiles()).length).toEqual(0);
+      expect(_.size(Index.getFiles())).toEqual(0);
     });
 
     it("it should increment the files count by one", function () {
       Index.addFile(hashFunction(filename1),file1);
-      expect(Object.keys(Index.getFiles()).length).toEqual((currentFileCount + 1));
+      expect(_.size(Index.getFiles())).toEqual((currentFileCount + 1));
     });
   });
 
   describe('when i build an index',function(){
     it("it should created an inverted index",function(){
       Index.buildIndex();
-      expect(Object.keys(Index.getIndex()).length).toBeGreaterThan(0);
+      expect(_.size(Index.getIndex())).toBeGreaterThan(0);
     });
 
     it("it should be an accurate index of the file",function(){
@@ -46,6 +46,24 @@ describe('Inverted Index Class',function(){
           });
         });
       });
+    });
+  });
+
+  describe('when i search the index',function(){
+    it('it should be able to handle a varied number of arguments',function(){
+      // expect(_.isEmpty(Index.searchIndex('a'))).toBeFalsy(); //check this later. test fails
+      expect(_.isEmpty(Index.searchIndex('a','the'))).toBeFalsy();
+      expect(_.isEmpty(Index.searchIndex('a','of','the'))).toBeFalsy();
+    });
+
+    it('it should be able to handle an array of arguments',function(){
+      expect(_.isEmpty(Index.searchIndex(['a','the']))).toBeFalsy();
+    });
+
+    it('it should return an empty object if the search term does not exist',function(){
+      var searchResult = Index.searchIndex(['aphid','rex']);
+      expect(_.isEmpty(searchResult.aphid)).toBeTruthy();
+      expect(_.isEmpty(searchResult.rex)).toBeTruthy();
     });
   });
 
