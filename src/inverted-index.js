@@ -3,25 +3,24 @@ var hashFunction = require('../src/hashObject');
 var _ = require('lodash');
 
 var Index = function(){
-  //store files
+  //store uploaded files
   this.jsonFiles = {};
   //store the inverted index
   this.index = {};
 
   this.addFile = function(index,jsonFile){
+    var parsedFile = this.parseJSON(jsonFile);
     //if the file is empty, do nothing
-    if(jsonFile.length > 0){
-      //if this a new file, store it
+    if(parsedFile && _.size(parsedFile) > 0){
+      //if file already exists, do nothing
       if(!this.jsonFiles[index]){
-        this.jsonFiles[index] = jsonFile;
-      }
-      else{
-        //if there's been a change to the file contents, update the file
-        if(hashFunction(this.jsonFiles[index]) !== hashFunction(jsonFile)){
-          this.jsonFiles[index] = jsonFile;
-        }
+        this.jsonFiles[index] = parsedFile;
       }
     }
+  };
+
+  this.getFile = function(fileIndex){
+    return this.jsonFiles[fileIndex] === undefined ? false : this.jsonFiles[fileIndex];
   };
 
   this.getFiles = function(){
@@ -33,24 +32,36 @@ var Index = function(){
   };
 
 
-  this.buildIndex = function(){
-    //get an instance of the index class for use inside the lodash loops
-    //lodash overwrites "this"
-    var self = this;
+  this.createAllFilesIndex = function(){
     //loop through files
-    _.forIn(self.jsonFiles,function(file,fileIndex){
+    _.forIn(this.jsonFiles,function(file,fileIndex){
       //loop through json objects in file
       _.forIn(file,function(document,documentIndex){
         //create object if undefined
-        self.index[fileIndex] = self.index[fileIndex] || {};
-        var titleWords = self.getWords(document.title);
-        self.saveTokens(titleWords,"title",fileIndex,documentIndex);
-        var textWords = self.getWords(document.text);
-        self.saveTokens(textWords,"text",fileIndex,documentIndex);
-      });
-    });
-    this.index = self.index;
+        this.index[fileIndex] = this.index[fileIndex] || {};
+        var titleWords = this.getWords(document.title);
+        this.saveTokens(titleWords,"title",fileIndex,documentIndex);
+        var textWords = this.getWords(document.text);
+        this.saveTokens(textWords,"text",fileIndex,documentIndex);
+      }.bind(this));
+    }.bind(this));
+    // this.index = self.index;
   };
+
+  this.createIndex = function(fileIndex){
+    if(this.jsonFiles[fileIndex] !== undefined){
+      //loop through json objects in file
+      _.forIn(this.jsonFiles[fileIndex],function(document,documentIndex){
+        //create object if undefined
+        this.index[fileIndex] = this.index[fileIndex] || {};
+        var titleWords = this.getWords(document.title);
+        this.saveTokens(titleWords,"title",fileIndex,documentIndex);
+        var textWords = this.getWords(document.text);
+        this.saveTokens(textWords,"text",fileIndex,documentIndex);
+      }.bind(this));
+    }
+  }
+
 
   this.searchIndex = function(){
     if(arguments.length === 1){
@@ -62,7 +73,7 @@ var Index = function(){
 
 
   this.searchSingleWord = function(word){
-    var result = [];
+    var result = {};
     _.forIn(this.getIndex(),function(file,fileIndex){
       if(file[word] !== undefined){
         result[fileIndex] = file[word];
@@ -73,39 +84,32 @@ var Index = function(){
 
   this.searchArray = function(searchTerms){
     var result = {};
-    var self = this;
     searchTerms.forEach(function(value){
-      result[value] = self.searchSingleWord(value);
-    });
+      result[value] = this.searchSingleWord(value);
+    }.bind(this));
     return result;
   };
 
   this.saveTokens = function(string,stringLocation,fileIndex,documentIndex){
-    var tempIndex = this.index;
     _.forIn(string,function(word,wordIndex){
-      tempIndex[fileIndex][word] = tempIndex[fileIndex][word] || [];
+      this.index[fileIndex][word] = this.index[fileIndex][word] || [];
       var wordDetail = {};
       wordDetail[documentIndex] = stringLocation;
-      tempIndex[fileIndex][word].push(wordDetail);
-    });
-    this.index = tempIndex;
+      this.index[fileIndex][word].push(wordDetail);
+    }.bind(this));
   };
 
-  this.getIndex = function(){
-    return this.index;
+  this.getIndex = function(fileIndex){
+    return fileIndex === undefined ?  this.index : this.index[fileIndex] === undefined ? false : this.index[fileIndex];
   };
 
-  this.getFileIndex = function(fileIndex){
-    return this.index[fileIndex] !== undefined ? this.index[fileIndex] : false;
-  };
 
-  this.isValidJson = function(jsonFile){
+  this.parseJSON = function(jsonFile){
       try {
-          JSON.parse(jsonFile);
+          return JSON.parse(jsonFile);
       } catch (err) {
           return false;
       }
-      return true;
   };
 
 };
