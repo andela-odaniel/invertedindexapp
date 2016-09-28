@@ -1,0 +1,16 @@
+.top-space {
+  margin-top: 10%;
+  margin-bottom: 2%;
+}
+
+.small-space {
+  margin: 1em;
+}
+
+.tabs .tab a.active {
+  color: dodgerblue;
+}
+
+.hide-input {
+  position: fixed; top: -100em
+}
