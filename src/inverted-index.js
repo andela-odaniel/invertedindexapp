@@ -19,9 +19,9 @@ var Index = function(){
     }
   };
 
-  this.removeFile = function(index){
-    if(this.jsonFiles[index]){
-      delete this.jsonFiles[index];
+  this.removeFile = function(fileIndex){
+    if(this.jsonFiles[fileIndex]){
+      delete this.jsonFiles[fileIndex];
     }
   };
 
@@ -51,7 +51,6 @@ var Index = function(){
         this.saveTokens(textWords,"text",fileIndex,documentIndex);
       }.bind(this));
     }.bind(this));
-    // this.index = self.index;
   };
 
   this.createIndex = function(fileIndex){
@@ -65,6 +64,12 @@ var Index = function(){
         var textWords = this.getWords(document.text);
         this.saveTokens(textWords,"text",fileIndex,documentIndex);
       }.bind(this));
+    }
+  }
+
+  this.removeIndex = function(fileIndex){
+    if(this.index[fileIndex]){      
+      delete this.index[fileIndex];
     }
   }
 
@@ -96,8 +101,8 @@ var Index = function(){
     return result;
   };
 
-  this.saveTokens = function(string,stringLocation,fileIndex,documentIndex){
-    _.forIn(string,function(word,wordIndex){
+  this.saveTokens = function(strings,stringLocation,fileIndex,documentIndex){
+    _.forIn(strings,function(word,wordIndex){
       this.index[fileIndex][word] = this.index[fileIndex][word] || [];
       var wordDetail = {};
       wordDetail[documentIndex] = stringLocation;

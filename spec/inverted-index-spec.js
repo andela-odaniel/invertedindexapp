@@ -26,6 +26,13 @@ var readFile = function(fileName,callback){
 describe('Inverted Index Class',function(){
   var Index = new IndexObject();
 
+  beforeEach(function(){
+    //empty the index
+    Index.index = {};
+    //empty the files
+    Index.jsonFiles = {};
+  });
+
   describe('Read Book Data',function(){
     var currentFileCount = _.size(Index.getFiles());
     describe('when I add a json file',function(){
@@ -67,7 +74,7 @@ describe('Inverted Index Class',function(){
     });
   });
 
-  describe('Remove Book data',function(){
+  describe('Remove Book Data',function(){
     describe('when I remove a file from the index',function(){
       it('it should reduce the file count by one',function(done){
         readFile(filename2,function(data){
@@ -96,7 +103,7 @@ describe('Inverted Index Class',function(){
 
       it("it should be an accurate index of the file",function(done){
         
-        readFile(filename2,function(data){
+        readFile(filename3,function(data){
           Index.addFile(filename3,data);
           Index.createIndex(filename3);
           //get the inverted index
@@ -157,6 +164,21 @@ describe('Inverted Index Class',function(){
         var searchResult = Index.searchIndex(['aphid','rex']);
         expect(_.isEmpty(searchResult.aphid)).toBeTruthy();
         expect(_.isEmpty(searchResult.rex)).toBeTruthy();
+      });
+    });
+  });
+
+  describe('Remove Index',function(){
+    describe('when I remove an index',function(){
+      it('it should reduce the index size by one',function(done){
+        readFile(filename2,function(data){
+          Index.addFile(filename2,data);
+          Index.createIndex(filename2);
+          expect(_.size(Index.getIndex())).toBeGreaterThan(0);
+          Index.removeIndex(filename2);
+          expect(_.size(Index.getIndex())).toEqual(0);
+          done();
+        });
       });
     });
   });
