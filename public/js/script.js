@@ -40,6 +40,8 @@ $(document).ready(function(){
     createIndex(fileName);
   });
 
+  
+
   function createIndex(fileName){
     window.index.createIndex(fileName);
     drawIndex();
