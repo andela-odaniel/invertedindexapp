@@ -19,6 +19,12 @@ var Index = function(){
     }
   };
 
+  this.removeFile = function(index){
+    if(this.jsonFiles[index]){
+      delete this.jsonFiles[index];
+    }
+  };
+
   this.getFile = function(fileIndex){
     return this.jsonFiles[fileIndex] === undefined ? false : this.jsonFiles[fileIndex];
   };
