@@ -67,6 +67,20 @@ describe('Inverted Index Class',function(){
     });
   });
 
+  describe('Remove Book data',function(){
+    describe('when I remove a file from the index',function(){
+      it('it should reduce the file count by one',function(done){
+        readFile(filename2,function(data){
+          Index.addFile(filename2,data);
+          expect(_.size(Index.getFiles())).toEqual(1);
+          Index.removeFile(filename2);
+          expect(_.size(Index.getFiles())).toEqual(0);
+          done();
+        })
+      })
+    })
+  });
+
   describe('Populate Index',function(){
     describe('when i build an index',function(){
       
