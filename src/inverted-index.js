@@ -1,5 +1,4 @@
 "use strict";
-var hashFunction = require('../src/hashObject');
 var _ = require('lodash');
 
 var Index = function(){
@@ -9,15 +8,28 @@ var Index = function(){
   this.index = {};
 
   this.addFile = function(index,jsonFile){
-    var parsedFile = this.parseJSON(jsonFile);
-    //if the file is empty, do nothing
-    if(parsedFile && _.size(parsedFile) > 0){
-      //if file already exists, do nothing
-      if(!this.jsonFiles[index]){
-        this.jsonFiles[index] = parsedFile;
-      }
+    if(this.isAllowedFile(index,jsonFile)){
+      this.jsonFiles[index] = this.parseJSON(jsonFile);;
     }
   };
+
+  this.isAllowedFile = function(index,jsonFile){
+    var parsedFile = this.parseJSON(jsonFile);
+    //ensure file is valid JSON and is not empty
+    if(parsedFile && _.size(parsedFile) > 0){
+      //ensure file is not duplicate
+      if(!this.jsonFiles[index]){
+        return true;
+      }
+    }
+    return false;
+  };
+
+  this.removeFile = function(index){
+    if(this.jsonFiles[index]){
+      delete this.jsonFiles[index];
+    }
+  } 
 
   this.getFile = function(fileIndex){
     return this.jsonFiles[fileIndex] === undefined ? false : this.jsonFiles[fileIndex];
@@ -33,59 +45,73 @@ var Index = function(){
 
 
   this.createAllFilesIndex = function(){
-    //loop through files
-    _.forIn(this.jsonFiles,function(file,fileIndex){
-      //loop through json objects in file
-      _.forIn(file,function(document,documentIndex){
-        //create object if undefined
-        this.index[fileIndex] = this.index[fileIndex] || {};
-        var titleWords = this.getWords(document.title);
-        this.saveTokens(titleWords,"title",fileIndex,documentIndex);
-        var textWords = this.getWords(document.text);
-        this.saveTokens(textWords,"text",fileIndex,documentIndex);
-      }.bind(this));
+    _.forIn(this.jsonFiles,function(file, fileIndex){
+      this.createIndex(fileIndex);
     }.bind(this));
-    // this.index = self.index;
   };
 
   this.createIndex = function(fileIndex){
     if(this.jsonFiles[fileIndex] !== undefined){
+      //create or empty the file index object
+      this.index[fileIndex] = {};
       //loop through json objects in file
       _.forIn(this.jsonFiles[fileIndex],function(document,documentIndex){
-        //create object if undefined
-        this.index[fileIndex] = this.index[fileIndex] || {};
-        var titleWords = this.getWords(document.title);
-        this.saveTokens(titleWords,"title",fileIndex,documentIndex);
-        var textWords = this.getWords(document.text);
-        this.saveTokens(textWords,"text",fileIndex,documentIndex);
+        var words = _.uniq(this.getWords(document.title+" "+document.text));
+        words.map(function(word){
+          //create word object if undefined
+          this.index[fileIndex][word] = this.index[fileIndex][word] || [];
+          this.index[fileIndex][word].push(documentIndex);
+        }.bind(this));
       }.bind(this));
     }
   }
 
-
-  this.searchIndex = function(){
-    if(arguments.length === 1){
-      return (typeof arguments[0] === 'object') ? this.searchArray(arguments[0]) : this.searchSingleWord(arguments[0]);
-    }else{
-      return this.searchArray(_.values(arguments));
+  this.removeIndex = function(index){
+    if(this.index[index]){
+      delete this.index[index];
     }
+  }
+
+
+  this.searchIndex = function(arrayOfFileIndices,arrayOfSearchTerms){
+    if(arrayOfFileIndices === undefined || arrayOfFileIndices.length < 1){
+      return [];
+    }
+    var fileIndices = arrayOfFileIndices;
+    //remove the file indices from the arguments object
+    delete arguments[0];
+    
+    var searchTerms = [];
+
+    _.forIn(arguments,function(arguement,arguementIndex){
+      if(typeof arguement === 'string'){
+        arguement = this.getWords(arguement);
+      }
+      searchTerms.push(arguement);
+    }.bind(this));
+    //remove null and undefined from searchTerms
+    searchTerms = _.compact(_.flattenDeep(searchTerms));
+    return this.searchArray(fileIndices,searchTerms);
   };
 
 
-  this.searchSingleWord = function(word){
+  this.searchSingleWord = function(arrayOfFileIndices,word){
     var result = {};
-    _.forIn(this.getIndex(),function(file,fileIndex){
-      if(file[word] !== undefined){
-        result[fileIndex] = file[word];
+    //search each file and add the result to ... well, result :)
+    for(var i = 0; i < arrayOfFileIndices.length; i++){
+      var wordLocationInFileIndex = this.getIndex()[arrayOfFileIndices[i]][word]
+      if(wordLocationInFileIndex !== undefined){
+        result[arrayOfFileIndices[i]] = wordLocationInFileIndex;
       }
-    });
+    }
     return result;
   };
 
-  this.searchArray = function(searchTerms){
+  this.searchArray = function(arrayOfFileIndices,arrayOfSearchTerms){
+    console.log(arguments);
     var result = {};
-    searchTerms.forEach(function(value){
-      result[value] = this.searchSingleWord(value);
+    arrayOfSearchTerms.forEach(function(value){
+      result[value] = this.searchSingleWord(arrayOfFileIndices,value);
     }.bind(this));
     return result;
   };

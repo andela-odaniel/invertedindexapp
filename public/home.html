@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html ng-app="invertedIndex">
+  <head>
+    <meta charset="utf-8">
+    <title>Inverted Index Search</title>
+
+    <!--Import Google Icon Font-->
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <link rel="stylesheet" href="bower_components/materialize/dist/css/materialize.min.css" type="text/css">
+    <link rel="stylesheet" href="css/custom.css" type="text/css">
+
+    <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js" ></script>
+    <script type="text/javascript" src="bower_components/materialize/dist/js/materialize.min.js"></script>
+    <script type="text/javascript" src="bower_components/angular/angular.min.js" ></script>
+    <script type="text/javascript" src="bower_components/ng-file-upload/ng-file-upload.min.js" ></script>
+    <script type="text/javascript" src="js/app.bundle.js"></script>
+  </head>
+  <body ng-controller="IndexController">
+    {{ message }}
+    <div class="small-space">
+      <div class="row">
+        <div class="col s6 card-panel cyan lighten-1">
+          <div class="col s12 top-space white-text" style="text-align: center">
+            <button id="file_select" ngf-select="uploadFiles($files)" multiple="multiple" type="button" class="btn-floating btn-large waves-effect waves-light red darken-2"><i class="material-icons">add</i></button>
+            <p>Add A File</p>
+          </div>
+          <div class="col s12">
+            <ul class="tabs">
+              <li class="tab col s3"><a class="active" href="#files_pane">Json Files</a></li>
+              <li class="tab col s3"><a class="" href="#index_pane">Inverted Index</a></li>
+            </ul>
+          </div>
+          <div id="files_pane" class="col s12">
+            <div id="files_empty_div" class="card-panel white" ng-show="filesEmpty" style="text-align: center">
+              <p class="grey-text">No Files Yet. Click the plus button above to add.</p>
+            </div>
+            <json-file ng-repeat="(key, data) in index.jsonFiles"/>
+          </div>
+          <div id="index_pane" class="col s12">
+            <div id="index_empty_div" class="card-panel white" ng-show="indexEmpty" style="text-align: center">
+              <p class="grey-text">The Index is empty. Create an index first.</p>
+            </div>
+            <file-index ng-repeat="(fileName,data) in index.index" />
+          </div>
+        </div>
+        <div class="col s6 card-panel cyan lighten-1">
+          <div class="col s12 top-space">
+            <label for="searchTerm" class="white-text">What would you like to Search for?</label>
+            <input type="text" ng-model="searchTerm" style="margin-bottom: 2.65em">
+            <files-checkbox></files-checkbox>
+            <button class="waves-effect waves-light btn green darken-2 right" ng-click="search()" ng-disabled="indexEmpty">Search</button>
+            <br />
+          </div>
+          <div class="col s12">
+            <div class="card-panel white" ng-hide="searchResultEmpty">
+              <div ng-repeat="(word,files) in searchResult">
+                <h5 class="left" style="text-align: left; font-weight: bold; font-size: 1.2em; color: #ee6e73">{{word}}</h5>
+                <div style="clear: both"></div>
+                <hr>
+                <div ng-repeat="(fileName,locations) in files">
+                  <p><b>{{ fileName }}:</b></p>
+                  <ul class="collapsible" data-collapsible="expandable">
+                    <li ng-repeat="item in locations">
+                      <div class="collapsible-header active cyan lighten-1 white-text">Document {{item}}</div>
+                      <div class="collapsible-body">
+                        <p style="padding: 10px"><b>Title</b>: {{ index.jsonFiles[fileName][item].title }}</p>
+                        <p style="padding: 10px"><b>Text</b>: {{ index.jsonFiles[fileName][item].text }}</p>
+                      </div>
+                    </li>
+                  </ul>
+              </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

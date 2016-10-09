@@ -1,0 +1,10 @@
+<!--{{ index.jsonFiles | json }}-->
+<div ng-if="searchTerm.length > 0" class="card-panel white">
+    <div ng-if="indexEmpty">You must first create an index to search</div>
+    <div  ng-repeat="(key,value) in index.index" ng-click="">
+        <p>
+        <input type="checkbox" id="{{$index}}" ng-model="thisfile" ng-change="fileSelected(key)"/>
+        <label for="{{$index}}">{{key}}</label>
+        </p>
+    </div>
+</div>

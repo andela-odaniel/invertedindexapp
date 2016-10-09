@@ -86,6 +86,7 @@ function drawRows(index,fileName){
   var numberOfDocuments = _.size(window.index.getFile(fileName));
    var result = "";
   _.forIn(index,function(word,wordIndex){
+    console.log(word[0], wordIndex);
     result += "<tr><td>"+wordIndex+"</td>";
     console.log("current word is '"+ wordIndex+"'");
     for(var i = 0; i < numberOfDocuments; i++){
@@ -93,17 +94,18 @@ function drawRows(index,fileName){
       if(word[i] !== undefined){
         console.log("the current document is");
         console.log(word[i]);
-        var currentKey = Object.keys(word[i]);
+        var currentKey = word[i];
         console.log("currentKey is "+ currentKey);
         console.log("counter is " + i);
-        console.log(" ---------- ");
         if(currentKey == i){
+          console.log('prints');
           result +="<td>&#10004;</td>";
         }
         else{
           result +="<td></td>";
         }
       }
+        console.log(" ---------- ");
     }
     result += "</tr>";
   });
