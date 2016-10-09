@@ -20,7 +20,7 @@ $(document).ready(function(){
         (function(fileIndex,reader){
           reader.addEventListener('load', function(){
             window.index.addFile(files[fileIndex].name,reader.result);
-            drawFiles();
+            drawFile(files[fileIndex].name);
           });
         })(i,reader);
         reader.readAsText(files[i]);
@@ -42,23 +42,70 @@ $(document).ready(function(){
 
   function createIndex(fileName){
     window.index.createIndex(fileName);
-    drawIndex();
+    console.log(window.index.getIndex(fileName));
+    drawIndex(fileName);
   }
 
-  function drawIndex(){
-    console.log("draws");
-  }
-
-  function drawFiles(){
-    var files = window.index.getFiles();
-    $('#files_pane').empty();
-    _.forIn(files,function(value,key){
-      var div = "<div class=\"card-panel white\" data-file-name="+key+" style=\"text-align: center\">"+
-              "<p>"+key+"</p>"+
+  function drawFile(fileName){
+    var file = window.index.getFile(fileName);
+    if(file){
+      var div = "<div class=\"card-panel white\" data-file-name="+fileName+" style=\"text-align: center\">"+
+              "<p>"+fileName+"</p>"+
               "<button type=\"button\" class=\"waves-effect waves-light create-index btn\" name=\"button\">Create Index</button>"+
               "<button type=\"button\" class=\"waves-effect waves-light btn red lighten-2\" name=\"button\">Delete File</button>"+
             "</div>";
       $('#files_pane').append(div);
-    });
+    }
+  }
+
+  function drawIndex(fileName){
+    var index = window.index.getIndex(fileName);
+    if(index){
+      var div = "<div class=\"card-panel white\" data-file-name="+fileName+"style=\"text-align: center\">\
+                    <table>\
+                      <thead>\
+                        <th>"+fileName+"</th>\
+                      </thead>\
+                      <tbody>\
+                        <tr>\
+                          <td>Word</td>\
+                          <td>Doc1</td>\
+                          <td>Doc2</td>\
+                        </tr>"+
+                        drawRows(index,fileName);
+                        +"\
+                      </tbody>\
+                    </table>\
+                  </div>";
+      $('#index_pane').append(div);
+    };
   }
 });
+
+function drawRows(index,fileName){
+  var numberOfDocuments = _.size(window.index.getFile(fileName));
+   var result = "";
+  _.forIn(index,function(word,wordIndex){
+    result += "<tr><td>"+wordIndex+"</td>";
+    console.log("current word is '"+ wordIndex+"'");
+    for(var i = 0; i < numberOfDocuments; i++){
+      console.log("Run #"+i);
+      if(word[i] !== undefined){
+        console.log("the current document is");
+        console.log(word[i]);
+        var currentKey = Object.keys(word[i]);
+        console.log("currentKey is "+ currentKey);
+        console.log("counter is " + i);
+        console.log(" ---------- ");
+        if(currentKey == i){
+          result +="<td>&#10004;</td>";
+        }
+        else{
+          result +="<td></td>";
+        }
+      }
+    }
+    result += "</tr>";
+  });
+  return result;
+}

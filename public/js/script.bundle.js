@@ -47995,6 +47995,7 @@ var Index = function(){
     }
   }
 
+
   this.searchIndex = function(){
     if(arguments.length === 1){
       return (typeof arguments[0] === 'object') ? this.searchArray(arguments[0]) : this.searchSingleWord(arguments[0]);
