@@ -5,5 +5,5 @@ script: gulp test
 before_script:
   - npm install
   - npm install gulp
-afterscript:
+after_script:
   - cat ./coverage/**/*.info | ./node_modules/coveralls/bin/coveralls.js
