@@ -6,7 +6,7 @@ before_script:
   - npm install
   - npm install gulp
 after_script:
-  - cat ./coverage/**/*.info | ./node_modules/coveralls/bin/coveralls
+  - cat ./coverage/**/*.info | ./node_modules/coveralls/bin/coveralls.js
 addons:
     code_climate:
         repo_token: 22eb8a4fb781ca8bfc39ca8ec53a91b7e5940dff30315ae5ed415aab4329b379

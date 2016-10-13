@@ -1,9 +1,8 @@
 engines:
   eslint:
     enabled: true
-    config: ./eslintrc.js
   csslint:
-    enabled: false
+    enabled: true
   duplication:
     enabled: true
     config:
@@ -11,6 +10,7 @@ engines:
       - javascript
 exclude_paths:
 - node_modules
+- data
 - spec/lib/
 - src/main.js
 - spec/test.js
