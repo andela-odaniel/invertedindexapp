@@ -34,6 +34,7 @@
     "gulp-rename": "^1.2.2",
     "jasmine-core": "^2.5.1",
     "jasmine-node": "^1.14.5",
+    "run-sequence": "^1.2.2",
     "vinyl-source-stream": "^1.1.0",
     "vinyl-transform": "^1.0.0",
     "yargs": "^5.0.0"
