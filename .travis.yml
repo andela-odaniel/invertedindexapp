@@ -6,7 +6,4 @@ before_script:
   - npm install
   - npm install gulp
 after_script:
-  - cat ./coverage/**/lcov.info | coveralls
-addons:
-    code_climate:
-        repo_token: 22eb8a4fb781ca8bfc39ca8ec53a91b7e5940dff30315ae5ed415aab4329b379
+  - istanbul cover jasmine-node --captureExceptions spec/ && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage
