@@ -1,0 +1,9 @@
+language: node_js
+node_js:
+    - "node"
+script: gulp test
+before_script:
+  - npm install
+  - npm install gulp
+after_script:
+  - cat ./coverage/**/*.info | ./node_modules/coveralls/bin/coveralls.js

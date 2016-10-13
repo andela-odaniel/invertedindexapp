@@ -1,0 +1,21 @@
+<div class="card-panel white" style="text-align: center">
+    <table>
+        <h5 class="left" style="text-align: left; font-weight: bold; font-size: 1.2em; color: #ee6e73">{{fileName}}</h5>
+        <button class="waves-effect waves-light btn red darken-2 right" ng-click="deleteIndex(fileName)">Delete Index</button>
+        <div style="clear: both"> </div>
+        <hr>
+    <thead>
+        <th>Word</th>
+        <td ng-repeat="counter in numberOfDocuments[fileName] track by $index">Doc {{$index}}</td>
+    </thead>
+    <tbody>
+            <tr ng-repeat="(key, value) in data">
+                <td> {{key}} </td>
+                <td ng-repeat="counter in numberOfDocuments[fileName] track by $index">
+                    <span style="color: green" ng-if="value.includes(''+$index)">&#10004;</span>
+                    <span style="color: red" ng-if="!value.includes(''+$index)">&#10008;</span>
+                </td>
+            </tr>
+    </tbody>
+    </table>
+</div>
