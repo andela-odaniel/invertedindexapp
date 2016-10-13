@@ -9,6 +9,8 @@ var bsInstance1 = browserSync.create();
 var bsInstance2 = browserSync.create();
 var gulpSequence = require('run-sequence');
 var bower = require('gulp-bower');
+var jasmineNode = require('gulp-jasmine-node');
+var istanbul = require('gulp-istanbul');
 
 gulp.task('default',function(callback){
     gulpSequence('build-source','build-spec','build-frontend-js',['web-test','web-serve'],'watch-changes',callback);
@@ -71,6 +73,24 @@ gulp.task('web-serve',function(){
       port: 7200
     }
   });
+});
+
+gulp.task('pre-test',function(){
+  return gulp.src(['./spec/**/*spec.js'])
+  .pipe(istanbul())
+  .pipe(istanbul.hookRequire());
+});
+
+gulp.task('test',['pre-test'],function(){
+  return gulp.src(['./spec/**/*spec.js'])
+  .pipe(jasmineNode({
+    timeout: 10000
+  }))
+  .pipe(istanbul.writeReports({
+    dir: './coverage',
+    reporters: [ 'lcov' ],
+    reportOpts: { dir: './coverage' },
+  }))
 });
 
 gulp.task('watch-changes',function(){
