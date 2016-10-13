@@ -1,15 +1,8 @@
----
-engines:
-  fixme:
-    enabled: true
-ratings:
-  paths: []
-exclude_paths: []
 engines:
   eslint:
     enabled: true
   csslint:
-    enabled: true
+    enabled: false
   duplication:
     enabled: true
     config:
