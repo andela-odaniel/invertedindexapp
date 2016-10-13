@@ -16762,7 +16762,6 @@
     });
 
     app.controller('IndexController',['$rootScope','$scope','$timeout',function($rootScope,$scope,$timeout){
-        $scope.message = "this is a message";
         $scope.index = new IndexObject();
         $scope.filesEmpty = true;
         $scope.indexEmpty = true;
