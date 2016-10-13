@@ -1,11 +1,7 @@
-
-  "language": "node_js",
-  "node_js": "node",
-  "script": "npm test",
-  "before_script": [
-    "npm install",
-  ],
-  "group": "stable",
-  "dist": "precise",
-  "os": "linux"
-}
+language: node_js
+node_js:
+    - "6.6.0"
+script: npm test
+before_script:
+  - npm install
+  - gulp install
