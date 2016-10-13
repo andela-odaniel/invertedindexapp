@@ -23,31 +23,7 @@
         }
     });
 
-    
-
-    app.directive('ngRepeatExpression',function($compile){
-        return {
-            //raise prority higher than ng-repeat
-            priority: 1001,
-            compile: function($elm,$attrs){
-                //get the expression to evaluate
-                var expression = $attrs.ngRepeatExpression;
-                //now that we have the value remove the ng-repeat-expression attribute
-                $elm.removeAttr('ng-repeat-expression');
-
-                return function(scope,elm,attrs){
-                    //add ng-repeat attribute with the result of the expression
-                    $elm.attr('ng-repeat',scope.$eval(expression));
-                    //recompile the element with updated scope
-                    $compile($elm)(scope);
-                }
-            }
-        }
-    });
-
-
     app.controller('IndexController',['$rootScope','$scope','$timeout',function($rootScope,$scope,$timeout){
-        $scope.message = "this is a message";
         $scope.index = new IndexObject();
         $scope.filesEmpty = true;
         $scope.indexEmpty = true;

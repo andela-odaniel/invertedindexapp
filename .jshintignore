@@ -1,4 +1,3 @@
 *.*
-!src/hashObject.js
 !src/inverted-index.js
 !spec/inverted-index.spec.js
