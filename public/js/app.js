@@ -1,7 +1,6 @@
 (function(){
     var IndexObject = require('../../src/inverted-index');
     var app = angular.module('invertedIndex',['ngFileUpload']);
-    var _ = require('lodash');
 
     app.directive('jsonFile',function(){
         return {
@@ -24,6 +23,8 @@
         }
     });
 
+    
+
     app.directive('ngRepeatExpression',function($compile){
         return {
             //raise prority higher than ng-repeat
@@ -45,7 +46,7 @@
     });
 
 
-    app.controller('IndexController',['$scope','$timeout',function($scope,$timeout){
+    app.controller('IndexController',['$rootScope','$scope','$timeout',function($rootScope,$scope,$timeout){
         $scope.message = "this is a message";
         $scope.index = new IndexObject();
         $scope.filesEmpty = true;
@@ -55,6 +56,7 @@
         $scope.numberOfDocuments = {};
         $scope.selectedFiles = [];
         $scope.searchResult = [];
+        $rootScope.keys = Object.keys;
 
         $scope.trackFilesSize = function(){
             if(Object.keys($scope.index.jsonFiles).length > 0){
@@ -83,12 +85,15 @@
                     $timeout(function(){
                         try{
                             var uploadedFile = angular.fromJson(reader.result);
-                            if(_.size(uploadedFile) < 1){
+                            if($scope.keys(uploadedFile).length < 1){
                                 Materialize.toast(fileName+' is empty', 2000,'rounded');
                             }else{
-                                $scope.index.addFile(fileName,reader.result);
-                                $scope.trackFilesSize();
-                                Materialize.toast(fileName+' uploaded', 2000,'rounded');
+                                if($scope.index.addFile(fileName,reader.result)){
+                                    $scope.trackFilesSize();
+                                    Materialize.toast(fileName+' uploaded', 2000,'rounded');
+                                }else{
+                                    Materialize.toast(fileName+' is invalid', 2000,'rounded');
+                                }
                             }
                         }catch(err){
                             Materialize.toast(fileName+' is invalid', 2000,'rounded');
@@ -138,10 +143,19 @@
         }
 
         $scope.search = function(){
-            $scope.searchResult = $scope.index.searchIndex($scope.selectedFiles,$scope.searchTerm);
-            $scope.searchTerm = '';
-            $scope.selectedFiles = [];
-            $scope.searchResultEmpty = false;
+            if($scope.searchTerm.length > 0){
+                if($scope.selectedFiles.length > 0){
+                    $scope.searchResult = $scope.index.searchIndex($scope.selectedFiles,$scope.searchTerm);
+                    $scope.searchTerm = '';
+                    $scope.selectedFiles = [];
+                    $scope.searchResultEmpty = false;
+                }
+                else{
+                    Materialize.toast('Select the files to search', 3000,'rounded');
+                }
+            }else{
+                Materialize.toast('Enter a word to search', 3000,'rounded');
+            }
         }
     }]);
 })();
