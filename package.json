@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/andela-odaniel/invertedindexapp.git"
+    "url": "git+https://github.com/sir-castiq/invertedindexapp.git"
   },
   "keywords": [
     "elasticsearch",
@@ -18,9 +18,9 @@
   "author": "@sir_castiq",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/andela-odaniel/invertedindexapp/issues"
+    "url": "https://github.com/sir-castiq/invertedindexapp/issues"
   },
-  "homepage": "https://github.com/andela-odaniel/invertedindexapp#readme",
+  "homepage": "https://github.com/sir-castiq/invertedindexapp#readme",
   "devDependencies": {
     "browser-sync": "^2.16.0",
     "browserify": "^13.1.0",
