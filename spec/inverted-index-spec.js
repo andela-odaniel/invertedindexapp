@@ -59,7 +59,6 @@ describe('Inverted Index Class', function () {
 
       it("it should make sure the file is a valid json array", function (done) {
         readFile(filename1, function (data) {
-          Index.addFile(filename1, data);
           expect(Index.addFile(filename1, data)).toBeFalsy();
           done();
         });
