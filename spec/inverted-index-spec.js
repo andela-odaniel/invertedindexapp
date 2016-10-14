@@ -4,8 +4,8 @@ var IndexObject = require('../src/inverted-index');
 var _ = require('lodash');
 var fs = require('fs');
 
-/***** 
- * HELPER JSON FILES TO RUN TESTS 
+/*****
+ * HELPER JSON FILES TO RUN TESTS
  * *****/
 //empty json file
 var filename0 = 'data/file0.json';
@@ -36,13 +36,13 @@ var readFile = function (fileName, callback) {
   });
 }
 
-/** 
+/**
  * Main Test Suite to test the Inverted Index class
 **/
 describe('Inverted Index Class', function () {
   var Index = new IndexObject();
 
-  /** 
+  /**
    * Test Suite to test reading book data
   **/
   describe('Read Book Data', function () {
@@ -103,7 +103,7 @@ describe('Inverted Index Class', function () {
 
   });
 
-  /** 
+  /**
    * Test Suite to test populating the file index
   **/
   describe('Populate Index', function () {
@@ -144,7 +144,7 @@ describe('Inverted Index Class', function () {
 
   });
 
-  /** 
+  /**
    * Test Suite to test searching the file index
   **/
   describe('Search Index', function () {
