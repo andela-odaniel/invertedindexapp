@@ -4,8 +4,8 @@ var IndexObject = require('../src/inverted-index');
 var _ = require('lodash');
 var fs = require('fs');
 
-/***** 
- * HELPER JSON FILES TO RUN TESTS 
+/*****
+ * HELPER JSON FILES TO RUN TESTS
  * *****/
 //empty json file
 var filename0 = 'data/file0.json';
@@ -36,13 +36,13 @@ var readFile = function (fileName, callback) {
   });
 }
 
-/** 
+/**
  * Main Test Suite to test the Inverted Index class
 **/
 describe('Inverted Index Class', function () {
   var Index = new IndexObject();
 
-  /** 
+  /**
    * Test Suite to test reading book data
   **/
   describe('Read Book Data', function () {
@@ -94,7 +94,7 @@ describe('Inverted Index Class', function () {
       it("it should increment the files count by one", function (done) {
         readFile(filename2, function (data) {
           Index.addFile(filename2, data);
-          expect(_.size(Index.getFiles())).toEqual((currentFileCount + 1));
+          expect(_.size(Index.getFiles())).toEqual(currentFileCount + 1);
           done();
         });
       });
@@ -103,19 +103,20 @@ describe('Inverted Index Class', function () {
 
   });
 
-  /** 
+  /**
    * Test Suite to test populating the file index
   **/
   describe('Populate Index', function () {
 
     describe('when i build an index', function () {
 
-      it("it should created an inverted index object", function (done) {
+      it("it should create an inverted index object", function (done) {
         readFile(filename2, function (data) {
           Index.addFile(filename2, data);
           Index.createIndex(filename2);
           expect(_.size(Index.getIndex())).toBeGreaterThan(0);
-          expect(Index.getIndex()[filename2]).toBeDefined;
+          expect(Index.getIndex(filename2)).toBeDefined;
+          expect(typeof Index.getIndex(filename2)).toEqual('object');
           done();
         });
       });
@@ -144,7 +145,7 @@ describe('Inverted Index Class', function () {
 
   });
 
-  /** 
+  /**
    * Test Suite to test searching the file index
   **/
   describe('Search Index', function () {

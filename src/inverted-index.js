@@ -12,7 +12,7 @@ var Index = function () {
    * if the file passes test
    * @param {string} index
    * @param {string} jsonFile
-   * @returns {boolean} 
+   * @returns {boolean}
    */
   this.addFile = function (index, jsonFile) {
     if (this.isAllowedFile(index, jsonFile)) {
@@ -57,7 +57,7 @@ var Index = function () {
    * Gets and returns a file from the
    * jsonFiles object
    * @param {string} fileIndex
-   * @returns {object} 
+   * @returns {object}
    */
   this.getFile = function (fileIndex) {
     return this.jsonFiles[fileIndex] === undefined ? false : this.jsonFiles[fileIndex];
@@ -155,7 +155,7 @@ var Index = function () {
 
 
   /**
-   * Searches the specified file indices for a 
+   * Searches the specified file indices for a
    * given search term
    * @param {array} arrayOfFileIndices
    * @param {string} word
@@ -175,7 +175,7 @@ var Index = function () {
 
 
   /**
-   * Searches the specified file indices for a 
+   * Searches the specified file indices for a
    * given search term
    * @param {array} arrayOfFileIndices
    * @param {array} arrayOfSearchTerms
@@ -196,12 +196,20 @@ var Index = function () {
    * @returns {object}
    */
   this.getIndex = function (fileIndex) {
-    return fileIndex === undefined ? this.index : this.index[fileIndex] === undefined ? false : this.index[fileIndex];
+    if(fileIndex === undefined){
+      return this.index;
+    }else{
+      if(this.index[fileIndex] != undefined){
+        return this.index[fileIndex];
+      }else{
+        return false;
+      }
+    }
   };
 
 
   /**
-   * Parses a given string and 
+   * Parses a given string and
    * returns a json object
    * @param {string} jsonFile
    * @returns {object, boolean}
