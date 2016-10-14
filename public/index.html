@@ -62,10 +62,9 @@
                   <p><b>{{ fileName }}:</b></p>
                   <ul class="collapsible" data-collapsible="expandable">
                     <li ng-repeat="item in locations">
-                      <div class="collapsible-header active cyan lighten-1 white-text">Document {{item}}</div>
+                      <div class="collapsible-header active cyan lighten-1 white-text">Document {{  $index  }}: {{ index.jsonFiles[fileName][item].title }}</div>
                       <div class="collapsible-body">
-                        <p style="padding: 10px"><b>Title</b>: {{ index.jsonFiles[fileName][item].title }}</p>
-                        <p style="padding: 10px"><b>Text</b>: {{ index.jsonFiles[fileName][item].text }}</p>
+                        <p style="padding: 10px">{{ index.jsonFiles[fileName][item].text }}</p>
                       </div>
                     </li>
                   </ul>

@@ -52,15 +52,13 @@ describe('Inverted Index Class', function () {
 
       it("it should make sure the file is not empty", function (done) {
         readFile(filename0, function (data) {
-          Index.addFile(filename0, data);
-          expect(_.size(Index.getFiles())).toEqual(0);
+          expect(Index.addFile(filename0, data)).toBeFalsy();
           done();
         });
       });
 
       it("it should make sure the file is a valid json array", function (done) {
         readFile(filename1, function (data) {
-          Index.addFile(filename1, data);
           expect(Index.addFile(filename1, data)).toBeFalsy();
           done();
         });
@@ -94,7 +92,7 @@ describe('Inverted Index Class', function () {
       it("it should increment the files count by one", function (done) {
         readFile(filename2, function (data) {
           Index.addFile(filename2, data);
-          expect(_.size(Index.getFiles())).toEqual((currentFileCount + 1));
+          expect(_.size(Index.getFiles())).toEqual(currentFileCount + 1);
           done();
         });
       });
@@ -110,12 +108,13 @@ describe('Inverted Index Class', function () {
 
     describe('when i build an index', function () {
 
-      it("it should created an inverted index object", function (done) {
+      it("it should create an inverted index object", function (done) {
         readFile(filename2, function (data) {
           Index.addFile(filename2, data);
           Index.createIndex(filename2);
           expect(_.size(Index.getIndex())).toBeGreaterThan(0);
-          expect(Index.getIndex()[filename2]).toBeDefined;
+          expect(Index.getIndex(filename2)).toBeDefined;
+          expect(typeof Index.getIndex(filename2)).toEqual('object');
           done();
         });
       });
