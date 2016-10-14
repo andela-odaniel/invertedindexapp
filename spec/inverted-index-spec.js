@@ -52,8 +52,7 @@ describe('Inverted Index Class', function () {
 
       it("it should make sure the file is not empty", function (done) {
         readFile(filename0, function (data) {
-          Index.addFile(filename0, data);
-          expect(_.size(Index.getFiles())).toEqual(0);
+          expect(Index.addFile(filename0, data)).toBeFalsy();
           done();
         });
       });
