@@ -149,7 +149,7 @@ describe('Inverted Index Class', function () {
   describe('Search Index', function () {
     describe('when i search the index', function () {
       beforeEach(function () {
-        var Index = new IndexObject();
+        Index = new IndexObject();
         var file = fs.readFileSync(filename2, 'utf-8');
         Index.addFile(filename2, file);
         Index.createIndex(filename2);
@@ -157,7 +157,7 @@ describe('Inverted Index Class', function () {
 
       it('it should return a correct result', function () {
         var files = Index.getFiles();
-        var result = Index.doSearch([filename2], 'a', 'the');
+        var result = Index.searchIndex([filename2], 'a', 'the');
         var result_a = result['a'][filename2];
         var result_the = result['the'][filename2];
 
@@ -175,7 +175,7 @@ describe('Inverted Index Class', function () {
       it('it should not take too long to search', function () {
         var files = Index.getFiles();
         var startTime = new Date();
-        var result = Index.doSearch([filename2], 'a');
+        var result = Index.searchIndex([filename2], 'a');
         var endTime = new Date();
         var result_a = result['a'][filename2];
         expect(endTime.getTime() - startTime.getTime()).toBeLessThan(5.0);
@@ -195,28 +195,28 @@ describe('Inverted Index Class', function () {
           4: ['a', 'of', 'the'],
         }
         //takes one term
-        var result0 = Index.doSearch([filename2], searchTerms[0]);
+        var result0 = Index.searchIndex([filename2], searchTerms[0]);
         expect(result0['termite']).toBeDefined();
 
         //takes 2 terms
-        var result1 = Index.doSearch([filename2], searchTerms[0], searchTerms[2]);
+        var result1 = Index.searchIndex([filename2], searchTerms[0], searchTerms[2]);
         expect(result1['termite']).toBeDefined();
         expect(result1['cat']).toBeDefined();
 
         //takes 3 terms
-        var result2 = Index.doSearch([filename2], searchTerms[0], searchTerms[2], searchTerms[3]);
+        var result2 = Index.searchIndex([filename2], searchTerms[0], searchTerms[2], searchTerms[3]);
         expect(result2['termite']).toBeDefined();
         expect(result2['cat']).toBeDefined();
         expect(result2['the']).toBeDefined();
 
         //takes a sentence
-        var result3 = Index.doSearch([filename2], searchTerms[1]);
+        var result3 = Index.searchIndex([filename2], searchTerms[1]);
         expect(result3['a']).toBeDefined();
         expect(result3['apple']).toBeDefined();
         expect(result3['ball']).toBeDefined();
 
         //takes a sentence and a string
-        var result4 = Index.doSearch([filename2], searchTerms[0], searchTerms[1]);
+        var result4 = Index.searchIndex([filename2], searchTerms[0], searchTerms[1]);
         expect(result4['a']).toBeDefined();
         expect(result4['apple']).toBeDefined();
         expect(result4['ball']).toBeDefined();
@@ -224,7 +224,7 @@ describe('Inverted Index Class', function () {
 
 
         //takes an array and a string
-        var result5 = Index.doSearch([filename2], searchTerms[1], searchTerms[4]);
+        var result5 = Index.searchIndex([filename2], searchTerms[1], searchTerms[4]);
         expect(result5['a']).toBeDefined();
         expect(result5['apple']).toBeDefined();
         expect(result5['ball']).toBeDefined();
@@ -233,13 +233,13 @@ describe('Inverted Index Class', function () {
       });
 
       it('it should be able to handle an array of arguments', function () {
-        var result = Index.doSearch([filename2], ['a', 'the']);
+        var result = Index.searchIndex([filename2], ['a', 'the']);
         expect(result['a']).toBeDefined();
         expect(result['the']).toBeDefined();
       });
 
       it('it should return an empty object if the search term does not exist', function () {
-        var searchResult = Index.doSearch([filename2], ['aphid', 'rex']);
+        var searchResult = Index.searchIndex([filename2], ['aphid', 'rex']);
         expect(_.isEmpty(searchResult.aphid)).toBeTruthy();
         expect(_.isEmpty(searchResult.rex)).toBeTruthy();
       });
