@@ -126,7 +126,7 @@ Index.prototype.removeIndex = function (index) {
  * @param {array,string} searchTerms
  * @returns {object}
  */
-Index.prototype.doSearch = function (arrayOfFileIndices,searchTerms) {
+Index.prototype.doSearch = function () {
   /* check if the first argument is an array of file indices to search
    * parameters must be at least 2, an array of indices to search and the terms to find
    */
