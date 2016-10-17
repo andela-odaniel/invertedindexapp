@@ -16985,25 +16985,25 @@
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],2:[function(require,module,exports){
-(function(){
+( function(){
     var IndexObject = require('../../src/inverted-index');
     var app = angular.module('invertedIndex',['ngFileUpload']);
 
-    app.directive('jsonFile',function(){
+    app.directive('jsonFile',function() {
         return {
             restrict: 'E',
             templateUrl: 'templates/fileDirective.html'
         }
     });
 
-    app.directive('fileIndex',function(){
+    app.directive('fileIndex',function() {
         return {
             restrict: 'E',
             templateUrl: 'templates/indexDirective.html'
         }
     });
 
-    app.directive('filesCheckbox',function(){
+    app.directive('filesCheckbox',function() {
         return {
             restrict: 'E',
             templateUrl: 'templates/filesCheckbox.html'
@@ -17021,37 +17021,35 @@
         $scope.searchResult = [];
         $rootScope.keys = Object.keys;
 
-        $scope.trackFilesSize = function(){
-            if(Object.keys($scope.index.jsonFiles).length > 0){
+        $scope.trackFilesSize = function() {
+            if (Object.keys($scope.index.jsonFiles).length) {
                 $scope.filesEmpty = false;
-            }
-            else{
+            }else{
                  $scope.filesEmpty = true;
             }
         }
 
-        $scope.trackIndexSize = function(){
-            if(Object.keys($scope.index.index).length > 0){
+        $scope.trackIndexSize = function() {
+            if (Object.keys($scope.index.index).length) {
                 $scope.indexEmpty = false;
-            }
-            else{
+            }else{
                  $scope.indexEmpty = true;
             }
         }
 
         $scope.uploadFiles = function(files) {
-            for(var i = 0; i < files.length; i++){
+            for (var i = 0; i < files.length; i++) {
                 var reader = new FileReader();
-                (function($scope,reader,fileName){
+                ( function($scope,reader,fileName) {
 
                 reader.addEventListener('load', function(){
-                    $timeout(function(){
+                    $timeout(function() {
                         try{
                             var uploadedFile = angular.fromJson(reader.result);
-                            if($scope.keys(uploadedFile).length < 1){
+                            if (!$scope.keys(uploadedFile).length) {
                                 Materialize.toast(fileName+' is empty', 2000,'rounded');
                             }else{
-                                if($scope.index.addFile(fileName,reader.result)){
+                                if ($scope.index.addFile(fileName,reader.result)) {
                                     $scope.trackFilesSize();
                                     Materialize.toast(fileName+' uploaded', 2000,'rounded');
                                 }else{
@@ -17069,7 +17067,7 @@
             }
         }
 
-        $scope.deleteFile = function(fileName){
+        $scope.deleteFile = function(fileName) {
             console.log(fileName);
             $scope.index.removeFile(fileName);
             $scope.trackFilesSize();
@@ -17077,25 +17075,25 @@
             Materialize.toast(fileName+' file deleted', 2000,'rounded');            
         }
 
-        $scope.createIndex = function(fileName){
+        $scope.createIndex = function(fileName) {
             $scope.index.createIndex(fileName);
             $scope.trackIndexSize();
             //js lacks a range function, we'll have to improvise
             $scope.numberOfDocuments[fileName] = [];
-            for(var i = 0; i < $scope.index.jsonFiles[fileName].length; i++){
+            var i = 0;
+            for (i; i < $scope.index.jsonFiles[fileName].length; i++) {
                 $scope.numberOfDocuments[fileName].push(i);
             }
             Materialize.toast(fileName+' index created', 2000,'rounded');            
         }
 
-        $scope.deleteIndex = function(fileName){
-            console.log(fileName);
+        $scope.deleteIndex = function(fileName) {
             $scope.index.removeIndex(fileName);
             $scope.trackIndexSize();
             Materialize.toast(fileName+' index deleted', 2000,'rounded');
         }
 
-        $scope.fileSelected = function(fileName){
+        $scope.fileSelected = function(fileName) {
             var fileIndex = $scope.selectedFiles.indexOf(fileName);
             if(fileIndex > -1){
                 $scope.selectedFiles.splice(fileIndex,1);
@@ -17105,12 +17103,11 @@
             }
         }
 
-        $scope.search = function(){
-            if($scope.searchTerm.length > 0){
-                if($scope.selectedFiles.length > 0){
+        $scope.search = function() {
+            if($scope.searchTerm.length > 0) {
+                if($scope.selectedFiles.length){
                     $scope.searchResult = $scope.index.doSearch($scope.selectedFiles,$scope.searchTerm);
-                }
-                else{
+                }else{
                     $scope.searchResult = $scope.index.doSearch(null,$scope.searchTerm);
                 }
                 $scope.searchTerm = '';
@@ -17219,11 +17216,11 @@ Index.prototype.getWords = function (string) {
  * @param {string} fileIndex
  */
 Index.prototype.createIndex = function (fileIndex) {
-  if (this.jsonFiles[fileIndex] !== undefined) {
+  if (this.jsonFiles[fileIndex]) {
     //create or empty the file index object
     this.index[fileIndex] = {};
     //loop through json objects in file
-    _.forIn(this.jsonFiles[fileIndex], function (document, documentIndex) {
+    _.forIn (this.jsonFiles[fileIndex], function (document, documentIndex) {
       var words = _.uniq(this.getWords(document.title + " " + document.text));
       words.map(function (word) {
         //create word object if undefined
@@ -17256,12 +17253,12 @@ Index.prototype.doSearch = function () {
   /** check if the first argument is an array of file indices to search
    * parameters must be at least 2, an array of indices to search and the terms to find
    **/
-  if(Array.isArray(arguments[0]) && Object.keys(arguments).length > 1){
+  if (Array.isArray(arguments[0]) && Object.keys(arguments).length > 1) {
     var prospectiveFileIndices = arguments[0];
     var i = 0;
-    for(i; i < prospectiveFileIndices.length; i ++){
+    for (i; i < prospectiveFileIndices.length; i ++) {
       /* if the propective file index exists add it to the search space */
-      if(this.jsonFiles[prospectiveFileIndices[i]] != undefined){
+      if(this.jsonFiles[prospectiveFileIndices[i]]) {
         this.searchSpace.push(prospectiveFileIndices[i]);
       }
     }
@@ -17270,34 +17267,33 @@ Index.prototype.doSearch = function () {
 
   var result = [];
   /* check if any file indices have been set to be searched if not search all files*/
-  if(this.searchSpace.length <  1){
+  if(!this.searchSpace.length){
     this.searchSpace = Object.keys(this.jsonFiles); 
   }
-  console.log(this.searchSpace);
 
   /* remove the first argument so that all that remain are search terms */
     delete arguments[0];
 
   var searchTerms = [];
 
-  _.forIn(arguments, function (argument, argumentIndex) {
+  _.forIn (arguments, function (argument, argumentIndex) {
     if (typeof argument === 'string') {
       argument = this.getWords(argument);
     }
 
-    if(argument != null && argument != undefined){
+    if (argument) {
       searchTerms.push(argument);
     }
   }.bind(this));
 
   //remove null and undefined from searchTerms array
   searchTerms = _.flattenDeep(searchTerms);
-  if(searchTerms.length > 0){
+  if (searchTerms.length) {
     result = this.searchIndex(searchTerms);
   }
   /* reset the search space*/
   this.searchSpace = [];
-  console.log(result);
+
   return result;
 }
 
@@ -17309,7 +17305,7 @@ Index.prototype.doSearch = function () {
  * @returns {object}
  */
 Index.prototype.searchIndex = function (arrayOfSearchTerms) {
-  if(Array.isArray(arrayOfSearchTerms) && this.searchSpace.length > 0){
+  if (Array.isArray(arrayOfSearchTerms) && this.searchSpace.length) {
     return this.searchArray(this.searchSpace, arrayOfSearchTerms);
   }else{
     return [];
@@ -17346,7 +17342,7 @@ Index.prototype.searchSingleWord = function (arrayOfFileIndices, word) {
  */
 Index.prototype.searchArray = function (arrayOfFileIndices, arrayOfSearchTerms) {
   var result = {};
-  arrayOfSearchTerms.forEach(function (value) {
+  arrayOfSearchTerms.forEach( function (value) {
     result[value] = this.searchSingleWord(arrayOfFileIndices, value);
   }.bind(this));
   return result;
@@ -17359,10 +17355,10 @@ Index.prototype.searchArray = function (arrayOfFileIndices, arrayOfSearchTerms) 
  * @returns {object,boolean}
  */
 Index.prototype.getIndex = function (fileIndex) {
-  if(fileIndex === undefined){
+  if (!fileIndex) {
     return this.index;
   }else{
-    if(this.index[fileIndex] != undefined){
+    if (this.index[fileIndex]) {
       return this.index[fileIndex];
     }else{
       return false;
@@ -17392,7 +17388,7 @@ Index.prototype.parseJSON = function (jsonFile) {
  */
 Index.prototype.verifyFileStructure = function (jsonFile) {
   var isValidFile = true;
-  _.forIn(jsonFile, function (document, documentIndex) {
+  _.forIn (jsonFile, function (document, documentIndex) {
     var isValidTitle = document.title !== undefined && document.title.length > 0 && typeof document.title === 'string';
     var isValidText = document.text !== undefined && document.text.length > 0 && typeof document.text === 'string';
     if (!(isValidText && isValidTitle)) {

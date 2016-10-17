@@ -17081,11 +17081,11 @@ Index.prototype.getWords = function (string) {
  * @param {string} fileIndex
  */
 Index.prototype.createIndex = function (fileIndex) {
-  if (this.jsonFiles[fileIndex] !== undefined) {
+  if (this.jsonFiles[fileIndex]) {
     //create or empty the file index object
     this.index[fileIndex] = {};
     //loop through json objects in file
-    _.forIn(this.jsonFiles[fileIndex], function (document, documentIndex) {
+    _.forIn (this.jsonFiles[fileIndex], function (document, documentIndex) {
       var words = _.uniq(this.getWords(document.title + " " + document.text));
       words.map(function (word) {
         //create word object if undefined
@@ -17118,12 +17118,12 @@ Index.prototype.doSearch = function () {
   /** check if the first argument is an array of file indices to search
    * parameters must be at least 2, an array of indices to search and the terms to find
    **/
-  if(Array.isArray(arguments[0]) && Object.keys(arguments).length > 1){
+  if (Array.isArray(arguments[0]) && Object.keys(arguments).length > 1) {
     var prospectiveFileIndices = arguments[0];
     var i = 0;
-    for(i; i < prospectiveFileIndices.length; i ++){
+    for (i; i < prospectiveFileIndices.length; i ++) {
       /* if the propective file index exists add it to the search space */
-      if(this.jsonFiles[prospectiveFileIndices[i]] != undefined){
+      if(this.jsonFiles[prospectiveFileIndices[i]]) {
         this.searchSpace.push(prospectiveFileIndices[i]);
       }
     }
@@ -17132,7 +17132,7 @@ Index.prototype.doSearch = function () {
 
   var result = [];
   /* check if any file indices have been set to be searched if not search all files*/
-  if(this.searchSpace.length <  1){
+  if(!this.searchSpace.length){
     this.searchSpace = Object.keys(this.jsonFiles); 
   }
 
@@ -17141,19 +17141,19 @@ Index.prototype.doSearch = function () {
 
   var searchTerms = [];
 
-  _.forIn(arguments, function (argument, argumentIndex) {
+  _.forIn (arguments, function (argument, argumentIndex) {
     if (typeof argument === 'string') {
       argument = this.getWords(argument);
     }
 
-    if(argument != null && argument != undefined){
+    if (argument) {
       searchTerms.push(argument);
     }
   }.bind(this));
 
   //remove null and undefined from searchTerms array
   searchTerms = _.flattenDeep(searchTerms);
-  if(searchTerms.length > 0){
+  if (searchTerms.length) {
     result = this.searchIndex(searchTerms);
   }
   /* reset the search space*/
@@ -17170,7 +17170,7 @@ Index.prototype.doSearch = function () {
  * @returns {object}
  */
 Index.prototype.searchIndex = function (arrayOfSearchTerms) {
-  if(Array.isArray(arrayOfSearchTerms) && this.searchSpace.length > 0){
+  if (Array.isArray(arrayOfSearchTerms) && this.searchSpace.length) {
     return this.searchArray(this.searchSpace, arrayOfSearchTerms);
   }else{
     return [];
@@ -17207,7 +17207,7 @@ Index.prototype.searchSingleWord = function (arrayOfFileIndices, word) {
  */
 Index.prototype.searchArray = function (arrayOfFileIndices, arrayOfSearchTerms) {
   var result = {};
-  arrayOfSearchTerms.forEach(function (value) {
+  arrayOfSearchTerms.forEach( function (value) {
     result[value] = this.searchSingleWord(arrayOfFileIndices, value);
   }.bind(this));
   return result;
@@ -17220,10 +17220,10 @@ Index.prototype.searchArray = function (arrayOfFileIndices, arrayOfSearchTerms) 
  * @returns {object,boolean}
  */
 Index.prototype.getIndex = function (fileIndex) {
-  if(fileIndex === undefined){
+  if (!fileIndex) {
     return this.index;
   }else{
-    if(this.index[fileIndex] != undefined){
+    if (this.index[fileIndex]) {
       return this.index[fileIndex];
     }else{
       return false;
@@ -17253,7 +17253,7 @@ Index.prototype.parseJSON = function (jsonFile) {
  */
 Index.prototype.verifyFileStructure = function (jsonFile) {
   var isValidFile = true;
-  _.forIn(jsonFile, function (document, documentIndex) {
+  _.forIn (jsonFile, function (document, documentIndex) {
     var isValidTitle = document.title !== undefined && document.title.length > 0 && typeof document.title === 'string';
     var isValidText = document.text !== undefined && document.text.length > 0 && typeof document.text === 'string';
     if (!(isValidText && isValidTitle)) {

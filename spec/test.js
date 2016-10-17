@@ -17116,7 +17116,7 @@ describe('Inverted Index Class', function () {
           var index = Index.getIndex(filename3);
           //get the uploaded json Files
           var file = Index.getFile(filename3);
-          _.forIn(index, function (word, wordIndex) {
+          _.forIn (index, function (word, wordIndex) {
             for (var i = 0; i < word.length; i++) {
               //get the json object referred to by the index entry
               var containingString = (file[word[i]].title + " " + file[word[i]].text).toLowerCase();
@@ -17144,22 +17144,22 @@ describe('Inverted Index Class', function () {
         Index.createIndex(filename2);
       });
 
-      // it('it should return a correct result', function () {
-      //   var files = Index.getFiles();
-      //   var result = Index.doSearch([filename2], 'a', 'the');
-      //   var result_a = result['a'][filename2];
-      //   var result_the = result['the'][filename2];
+      it('it should return a correct result', function () {
+        var files = Index.getFiles();
+        var result = Index.doSearch([filename2], 'a', 'the');
+        var result_a = result['a'][filename2];
+        var result_the = result['the'][filename2];
 
-      //   result_a.forEach(function (value) {
-      //     var containingString = files[filename2][value].title + " " + files[filename2][value].text;
-      //     expect(containingString.indexOf('a')).toBeGreaterThan(-1);
-      //   });
+        result_a.forEach(function (value) {
+          var containingString = files[filename2][value].title + " " + files[filename2][value].text;
+          expect(containingString.indexOf('a')).toBeGreaterThan(-1);
+        });
 
-      //   result_the.forEach(function (value) {
-      //     var containingString = files[filename2][value].title + " " + files[filename2][value].text;
-      //     expect(containingString.indexOf('the')).toBeGreaterThan(-1);
-      //   });
-      // });
+        result_the.forEach(function (value) {
+          var containingString = files[filename2][value].title + " " + files[filename2][value].text;
+          expect(containingString.indexOf('the')).toBeGreaterThan(-1);
+        });
+      });
 
       it('it should still search if no file indices were passed', function () {
         var files = Index.getFiles();
@@ -17178,77 +17178,77 @@ describe('Inverted Index Class', function () {
         });
       });
 
-      // it('it should not take too long to search', function () {
-      //   var files = Index.getFiles();
-      //   var startTime = new Date();
-      //   var result = Index.doSearch([filename2], 'a');
-      //   var endTime = new Date();
-      //   var result_a = result['a'][filename2];
-      //   expect(endTime.getTime() - startTime.getTime()).toBeLessThan(5.0);
+      it('it should not take too long to search', function () {
+        var files = Index.getFiles();
+        var startTime = new Date();
+        var result = Index.doSearch([filename2], 'a');
+        var endTime = new Date();
+        var result_a = result['a'][filename2];
+        expect(endTime.getTime() - startTime.getTime()).toBeLessThan(5.0);
 
-      //   result_a.forEach(function (value) {
-      //     var containingString = files[filename2][value].title + " " + files[filename2][value].text;
-      //     expect(containingString.indexOf('a')).toBeGreaterThan(-1);
-      //   });
-      // });
+        result_a.forEach(function (value) {
+          var containingString = files[filename2][value].title + " " + files[filename2][value].text;
+          expect(containingString.indexOf('a')).toBeGreaterThan(-1);
+        });
+      });
 
-      // it('it should be able to handle a varied number of arguments', function () {
-      //   var searchTerms = {
-      //     0: 'termite',
-      //     1: 'a apple ball',
-      //     2: 'cat',
-      //     3: 'the',
-      //     4: ['a', 'of', 'the'],
-      //   }
-      //   //takes one term
-      //   var result0 = Index.doSearch([filename2], searchTerms[0]);
-      //   expect(result0['termite']).toBeDefined();
+      it('it should be able to handle a varied number of arguments', function () {
+        var searchTerms = {
+          0: 'termite',
+          1: 'a apple ball',
+          2: 'cat',
+          3: 'the',
+          4: ['a', 'of', 'the'],
+        }
+        //takes one term
+        var result0 = Index.doSearch([filename2], searchTerms[0]);
+        expect(result0['termite']).toBeDefined();
 
-      //   //takes 2 terms
-      //   var result1 = Index.doSearch([filename2], searchTerms[0], searchTerms[2]);
-      //   expect(result1['termite']).toBeDefined();
-      //   expect(result1['cat']).toBeDefined();
+        //takes 2 terms
+        var result1 = Index.doSearch([filename2], searchTerms[0], searchTerms[2]);
+        expect(result1['termite']).toBeDefined();
+        expect(result1['cat']).toBeDefined();
 
-      //   //takes 3 terms
-      //   var result2 = Index.doSearch([filename2], searchTerms[0], searchTerms[2], searchTerms[3]);
-      //   expect(result2['termite']).toBeDefined();
-      //   expect(result2['cat']).toBeDefined();
-      //   expect(result2['the']).toBeDefined();
+        //takes 3 terms
+        var result2 = Index.doSearch([filename2], searchTerms[0], searchTerms[2], searchTerms[3]);
+        expect(result2['termite']).toBeDefined();
+        expect(result2['cat']).toBeDefined();
+        expect(result2['the']).toBeDefined();
 
-      //   //takes a sentence
-      //   var result3 = Index.doSearch([filename2], searchTerms[1]);
-      //   expect(result3['a']).toBeDefined();
-      //   expect(result3['apple']).toBeDefined();
-      //   expect(result3['ball']).toBeDefined();
+        //takes a sentence
+        var result3 = Index.doSearch([filename2], searchTerms[1]);
+        expect(result3['a']).toBeDefined();
+        expect(result3['apple']).toBeDefined();
+        expect(result3['ball']).toBeDefined();
 
-      //   //takes a sentence and a string
-      //   var result4 = Index.doSearch([filename2], searchTerms[0], searchTerms[1]);
-      //   expect(result4['a']).toBeDefined();
-      //   expect(result4['apple']).toBeDefined();
-      //   expect(result4['ball']).toBeDefined();
-      //   expect(result4['termite']).toBeDefined();
+        //takes a sentence and a string
+        var result4 = Index.doSearch([filename2], searchTerms[0], searchTerms[1]);
+        expect(result4['a']).toBeDefined();
+        expect(result4['apple']).toBeDefined();
+        expect(result4['ball']).toBeDefined();
+        expect(result4['termite']).toBeDefined();
 
 
-      //   //takes an array and a string
-      //   var result5 = Index.doSearch([filename2], searchTerms[1], searchTerms[4]);
-      //   expect(result5['a']).toBeDefined();
-      //   expect(result5['apple']).toBeDefined();
-      //   expect(result5['ball']).toBeDefined();
-      //   expect(result5['of']).toBeDefined();
-      //   expect(result5['the']).toBeDefined();
-      // });
+        //takes an array and a string
+        var result5 = Index.doSearch([filename2], searchTerms[1], searchTerms[4]);
+        expect(result5['a']).toBeDefined();
+        expect(result5['apple']).toBeDefined();
+        expect(result5['ball']).toBeDefined();
+        expect(result5['of']).toBeDefined();
+        expect(result5['the']).toBeDefined();
+      });
 
-      // it('it should be able to handle an array of arguments', function () {
-      //   var result = Index.doSearch([filename2], ['a', 'the']);
-      //   expect(result['a']).toBeDefined();
-      //   expect(result['the']).toBeDefined();
-      // });
+      it('it should be able to handle an array of arguments', function () {
+        var result = Index.doSearch([filename2], ['a', 'the']);
+        expect(result['a']).toBeDefined();
+        expect(result['the']).toBeDefined();
+      });
 
-      // it('it should return an empty object if the search term does not exist', function () {
-      //   var searchResult = Index.doSearch([filename2], ['aphid', 'rex']);
-      //   expect(_.isEmpty(searchResult.aphid)).toBeTruthy();
-      //   expect(_.isEmpty(searchResult.rex)).toBeTruthy();
-      // });
+      it('it should return an empty object if the search term does not exist', function () {
+        var searchResult = Index.doSearch([filename2], ['aphid', 'rex']);
+        expect(_.isEmpty(searchResult.aphid)).toBeTruthy();
+        expect(_.isEmpty(searchResult.rex)).toBeTruthy();
+      });
     });
   });
 });
@@ -17350,11 +17350,11 @@ Index.prototype.getWords = function (string) {
  * @param {string} fileIndex
  */
 Index.prototype.createIndex = function (fileIndex) {
-  if (this.jsonFiles[fileIndex] !== undefined) {
+  if (this.jsonFiles[fileIndex]) {
     //create or empty the file index object
     this.index[fileIndex] = {};
     //loop through json objects in file
-    _.forIn(this.jsonFiles[fileIndex], function (document, documentIndex) {
+    _.forIn (this.jsonFiles[fileIndex], function (document, documentIndex) {
       var words = _.uniq(this.getWords(document.title + " " + document.text));
       words.map(function (word) {
         //create word object if undefined
@@ -17387,12 +17387,12 @@ Index.prototype.doSearch = function () {
   /** check if the first argument is an array of file indices to search
    * parameters must be at least 2, an array of indices to search and the terms to find
    **/
-  if(Array.isArray(arguments[0]) && Object.keys(arguments).length > 1){
+  if (Array.isArray(arguments[0]) && Object.keys(arguments).length > 1) {
     var prospectiveFileIndices = arguments[0];
     var i = 0;
-    for(i; i < prospectiveFileIndices.length; i ++){
+    for (i; i < prospectiveFileIndices.length; i ++) {
       /* if the propective file index exists add it to the search space */
-      if(this.jsonFiles[prospectiveFileIndices[i]] != undefined){
+      if(this.jsonFiles[prospectiveFileIndices[i]]) {
         this.searchSpace.push(prospectiveFileIndices[i]);
       }
     }
@@ -17401,34 +17401,33 @@ Index.prototype.doSearch = function () {
 
   var result = [];
   /* check if any file indices have been set to be searched if not search all files*/
-  if(this.searchSpace.length <  1){
+  if(!this.searchSpace.length){
     this.searchSpace = Object.keys(this.jsonFiles); 
   }
-  console.log(this.searchSpace);
 
   /* remove the first argument so that all that remain are search terms */
     delete arguments[0];
 
   var searchTerms = [];
 
-  _.forIn(arguments, function (argument, argumentIndex) {
+  _.forIn (arguments, function (argument, argumentIndex) {
     if (typeof argument === 'string') {
       argument = this.getWords(argument);
     }
 
-    if(argument != null && argument != undefined){
+    if (argument) {
       searchTerms.push(argument);
     }
   }.bind(this));
 
   //remove null and undefined from searchTerms array
   searchTerms = _.flattenDeep(searchTerms);
-  if(searchTerms.length > 0){
+  if (searchTerms.length) {
     result = this.searchIndex(searchTerms);
   }
   /* reset the search space*/
   this.searchSpace = [];
-  console.log(result);
+
   return result;
 }
 
@@ -17440,7 +17439,7 @@ Index.prototype.doSearch = function () {
  * @returns {object}
  */
 Index.prototype.searchIndex = function (arrayOfSearchTerms) {
-  if(Array.isArray(arrayOfSearchTerms) && this.searchSpace.length > 0){
+  if (Array.isArray(arrayOfSearchTerms) && this.searchSpace.length) {
     return this.searchArray(this.searchSpace, arrayOfSearchTerms);
   }else{
     return [];
@@ -17477,7 +17476,7 @@ Index.prototype.searchSingleWord = function (arrayOfFileIndices, word) {
  */
 Index.prototype.searchArray = function (arrayOfFileIndices, arrayOfSearchTerms) {
   var result = {};
-  arrayOfSearchTerms.forEach(function (value) {
+  arrayOfSearchTerms.forEach( function (value) {
     result[value] = this.searchSingleWord(arrayOfFileIndices, value);
   }.bind(this));
   return result;
@@ -17490,10 +17489,10 @@ Index.prototype.searchArray = function (arrayOfFileIndices, arrayOfSearchTerms) 
  * @returns {object,boolean}
  */
 Index.prototype.getIndex = function (fileIndex) {
-  if(fileIndex === undefined){
+  if (!fileIndex) {
     return this.index;
   }else{
-    if(this.index[fileIndex] != undefined){
+    if (this.index[fileIndex]) {
       return this.index[fileIndex];
     }else{
       return false;
@@ -17523,7 +17522,7 @@ Index.prototype.parseJSON = function (jsonFile) {
  */
 Index.prototype.verifyFileStructure = function (jsonFile) {
   var isValidFile = true;
-  _.forIn(jsonFile, function (document, documentIndex) {
+  _.forIn (jsonFile, function (document, documentIndex) {
     var isValidTitle = document.title !== undefined && document.title.length > 0 && typeof document.title === 'string';
     var isValidText = document.text !== undefined && document.text.length > 0 && typeof document.text === 'string';
     if (!(isValidText && isValidTitle)) {

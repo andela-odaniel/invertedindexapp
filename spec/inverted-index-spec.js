@@ -127,7 +127,7 @@ describe('Inverted Index Class', function () {
           var index = Index.getIndex(filename3);
           //get the uploaded json Files
           var file = Index.getFile(filename3);
-          _.forIn(index, function (word, wordIndex) {
+          _.forIn (index, function (word, wordIndex) {
             for (var i = 0; i < word.length; i++) {
               //get the json object referred to by the index entry
               var containingString = (file[word[i]].title + " " + file[word[i]].text).toLowerCase();
