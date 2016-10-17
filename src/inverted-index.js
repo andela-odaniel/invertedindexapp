@@ -264,8 +264,8 @@ Index.prototype.parseJSON = function (jsonFile) {
 Index.prototype.verifyFileStructure = function (jsonFile) {
   var isValidFile = true;
   _.forIn(jsonFile, function (document, documentIndex) {
-    var isValidTitle = document.title !== undefined && document.title.length > 0 && typeof document.title == 'string';
-    var isValidText = document.text !== undefined && document.text.length > 0 && typeof document.text == 'string';
+    var isValidTitle = document.title !== undefined && document.title.length > 0 && typeof document.title === 'string';
+    var isValidText = document.text !== undefined && document.text.length > 0 && typeof document.text === 'string';
     if (!(isValidText && isValidTitle)) {
       isValidFile = false;
       //doesn't actually return, just breaks out of loop
