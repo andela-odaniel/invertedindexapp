@@ -121,14 +121,14 @@
         $scope.search = function(){
             if($scope.searchTerm.length > 0){
                 if($scope.selectedFiles.length > 0){
-                    $scope.searchResult = $scope.index.searchIndex($scope.selectedFiles,$scope.searchTerm);
-                    $scope.searchTerm = '';
-                    $scope.selectedFiles = [];
-                    $scope.searchResultEmpty = false;
+                    $scope.searchResult = $scope.index.doSearch($scope.selectedFiles,$scope.searchTerm);
                 }
                 else{
-                    Materialize.toast('Select the files to search', 3000,'rounded');
+                    $scope.searchResult = $scope.index.doSearch(null,$scope.searchTerm);
                 }
+                $scope.searchTerm = '';
+                $scope.selectedFiles = [];
+                $scope.searchResultEmpty = false;
             }else{
                 Materialize.toast('Enter a word to search', 3000,'rounded');
             }

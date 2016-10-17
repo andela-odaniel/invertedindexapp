@@ -172,6 +172,23 @@ describe('Inverted Index Class', function () {
         });
       });
 
+      it('it should still search if no file indices were passed', function () {
+        var files = Index.getFiles();
+        var result = Index.doSearch(null, 'of', 'the');
+        var result_of = result['of'][filename2];
+        var result_the = result['the'][filename2];
+
+        result_of.forEach(function (value) {
+          var containingString = files[filename2][value].title + " " + files[filename2][value].text;
+          expect(containingString.indexOf('of')).toBeGreaterThan(-1);
+        });
+
+        result_the.forEach(function (value) {
+          var containingString = files[filename2][value].title + " " + files[filename2][value].text;
+          expect(containingString.indexOf('the')).toBeGreaterThan(-1);
+        });
+      });
+
       it('it should not take too long to search', function () {
         var files = Index.getFiles();
         var startTime = new Date();

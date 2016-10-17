@@ -142,32 +142,35 @@ Index.prototype.doSearch = function () {
     }
   }
 
+
   var result = [];
-  /* check if any file indices have been set to be searched */
-  if(this.searchSpace.length > 0){
-    /* remove the first argument so that all that remain are search terms */
+  /* check if any file indices have been set to be searched if not search all files*/
+  if(this.searchSpace.length <  1){
+    this.searchSpace = Object.keys(this.jsonFiles); 
+  }
+
+  /* remove the first argument so that all that remain are search terms */
     delete arguments[0];
 
-    var searchTerms = [];
+  var searchTerms = [];
 
-    _.forIn(arguments, function (argument, argumentIndex) {
-      if (typeof argument === 'string') {
-        argument = this.getWords(argument);
-      }
-
-      if(argument != null && argument != undefined){
-        searchTerms.push(argument);
-      }
-    }.bind(this));
-
-    //remove null and undefined from searchTerms array
-    searchTerms = _.flattenDeep(searchTerms);
-    if(searchTerms.length > 0){
-      result = this.searchIndex(searchTerms);
+  _.forIn(arguments, function (argument, argumentIndex) {
+    if (typeof argument === 'string') {
+      argument = this.getWords(argument);
     }
-    /* reset the search space*/
-    this.searchSpace = [];
+
+    if(argument != null && argument != undefined){
+      searchTerms.push(argument);
+    }
+  }.bind(this));
+
+  //remove null and undefined from searchTerms array
+  searchTerms = _.flattenDeep(searchTerms);
+  if(searchTerms.length > 0){
+    result = this.searchIndex(searchTerms);
   }
+  /* reset the search space*/
+  this.searchSpace = [];
 
   return result;
 }
