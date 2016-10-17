@@ -19,7 +19,7 @@ var Index = function () {
  * @param {string} index
  * @param {string} jsonFile
  * @returns {boolean}
- **/
+ */
 Index.prototype.addFile = function (index, jsonFile) {
   if (this.isAllowedFile(index, jsonFile)) {
     this.jsonFiles[index] = this.parseJSON(jsonFile);
@@ -35,7 +35,7 @@ Index.prototype.addFile = function (index, jsonFile) {
  * @param {string} index
  * @param {string} jsonFile
  * @returns {boolean}
- **/
+ */
 Index.prototype.isAllowedFile = function (index, jsonFile) {
   var parsedFile = this.parseJSON(jsonFile);
   var isValidFileStructure = this.verifyFileStructure(parsedFile);
@@ -52,7 +52,7 @@ Index.prototype.isAllowedFile = function (index, jsonFile) {
 /**
  * Deletes a file from the jsonFiles object
  * @param {string} index
- **/
+ */
 Index.prototype.removeFile = function (index) {
   if (this.jsonFiles[index]) {
     delete this.jsonFiles[index];
@@ -64,7 +64,7 @@ Index.prototype.removeFile = function (index) {
  * jsonFiles object
  * @param {string} fileIndex
  * @returns {object}
- **/
+ */
 Index.prototype.getFile = function (fileIndex) {
   return this.jsonFiles[fileIndex] === undefined ? false : this.jsonFiles[fileIndex];
 };
@@ -73,7 +73,7 @@ Index.prototype.getFile = function (fileIndex) {
  * Gets all files from the jsonFiles
  * object
  * @returns {object}
- **/
+ */
 Index.prototype.getFiles = function () {
   return this.jsonFiles;
 };
@@ -82,7 +82,7 @@ Index.prototype.getFiles = function () {
  * Gets the individual words in a string
  * @param {string} string
  * @returns {array}
- **/
+ */
 Index.prototype.getWords = function (string) {
   return string.replace(/[.,\/#!$%\^&\*;:'{}=\-_`~()]/g, '').trim().toLowerCase().split(' ');
 };
@@ -92,7 +92,7 @@ Index.prototype.getWords = function (string) {
  * Creates inverted indices for a specified file
  * in the jsonFiles object
  * @param {string} fileIndex
- **/
+ */
 Index.prototype.createIndex = function (fileIndex) {
   if (this.jsonFiles[fileIndex] !== undefined) {
     //create or empty the file index object
@@ -113,7 +113,7 @@ Index.prototype.createIndex = function (fileIndex) {
  * Deletes a particular inverted index
  * from the index object
  * @param {string} index
- **/
+ */
 Index.prototype.removeIndex = function (index) {
   if (this.index[index]) {
     delete this.index[index];
@@ -126,7 +126,7 @@ Index.prototype.removeIndex = function (index) {
  * @param {array} arrayOfFileIndices
  * @param {array,string} searchTerms
  * @returns {object}
- **/
+ */
 Index.prototype.doSearch = function () {
   /** check if the first argument is an array of file indices to search
    * parameters must be at least 2, an array of indices to search and the terms to find
@@ -178,7 +178,7 @@ Index.prototype.doSearch = function () {
  * provided search term(s)
  * @param {array} arrayOfSearchTerms
  * @returns {object}
- **/
+ */
 Index.prototype.searchIndex = function (arrayOfSearchTerms) {
   if(Array.isArray(arrayOfSearchTerms) && this.searchSpace.length > 0){
     return this.searchArray(this.searchSpace, arrayOfSearchTerms);
@@ -194,7 +194,7 @@ Index.prototype.searchIndex = function (arrayOfSearchTerms) {
  * @param {array} arrayOfFileIndices
  * @param {string} word
  * @returns {object}
- **/
+ */
 Index.prototype.searchSingleWord = function (arrayOfFileIndices, word) {
   var result = {};
   //search each file and add the result to ... well, result :)
@@ -214,7 +214,7 @@ Index.prototype.searchSingleWord = function (arrayOfFileIndices, word) {
  * @param {array} arrayOfFileIndices
  * @param {array} arrayOfSearchTerms
  * @returns {object}
- **/
+ */
 Index.prototype.searchArray = function (arrayOfFileIndices, arrayOfSearchTerms) {
   var result = {};
   arrayOfSearchTerms.forEach(function (value) {
@@ -228,7 +228,7 @@ Index.prototype.searchArray = function (arrayOfFileIndices, arrayOfSearchTerms) 
  * depending on if an argument is passed
  * @param {string} fileIndex
  * @returns {object,boolean}
- **/
+ */
 Index.prototype.getIndex = function (fileIndex) {
   if(fileIndex === undefined){
     return this.index;
@@ -247,7 +247,7 @@ Index.prototype.getIndex = function (fileIndex) {
  * returns a json object
  * @param {string} jsonFile
  * @returns {object, boolean}
- **/
+ */
 Index.prototype.parseJSON = function (jsonFile) {
   try {
     return JSON.parse(jsonFile);
@@ -260,7 +260,7 @@ Index.prototype.parseJSON = function (jsonFile) {
  * Verifies the structure of a given json object
  * @param {object,array} jsonFile
  * @returns {boolean}
- **/
+ */
 Index.prototype.verifyFileStructure = function (jsonFile) {
   var isValidFile = true;
   _.forIn(jsonFile, function (document, documentIndex) {
